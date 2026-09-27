@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PH Imports</title>
+<style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', sans-serif;}
+    body{color:#fff;background:#000;overflow-x:hidden;}
+    #video-bg{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-2;}
+.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:-1;}
+    header{padding:0;text-align:center;width:100%;background:#000;}
+.banner-topo{width:100%;margin:0;padding:0;border-radius:0;overflow:hidden;line-height:0;background:#000;}
+.banner-topo img{width:100%;height:auto;display:block;object-fit:contain;}
+.frase-destaque{font-size:1.6rem;font-weight:700;color:#fff;text-shadow:0 2px 15px rgba(0,0,0,0.8);letter-spacing:1px;margin:15px 0;padding:0 15px;}
+.barra-pesquisa-container{width:90%;max-width:700px;margin:0 auto 12px auto;display:flex;align-items:center;background:rgba(0,0,0,0.5);border:1px solid rgba(255,215,0,0.3);border-radius:30px;backdrop-filter:blur(10px);overflow:hidden;}
+    #campo-busca{flex:1;background:transparent;border:none;padding:12px 18px;color:#fff;outline:none;}
+    #btn-limpar-busca{background:rgba(255,255,255,0.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;margin-right:8px;cursor:pointer;display:none;}
+    #btn-limpar-busca.mostrar{display:block;}
+.categorias-container{width:90%;max-width:700px;margin:0 auto 20px auto;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.cat-box{background:rgba(255,255,255,0.08);border:1px solid rgba(255,215,0,0.3);color:#fff;padding:8px 16px;border-radius:10px;font-weight:700;font-size:0.9rem;cursor:pointer;}
+.cat-box.ativa{background:#FFD700;color:#000;border-color:#FFD700;}
+.produtos-section{max-width:1400px;margin:0 auto;padding:15px;text-align:center;background:rgba(0,0,0,0.3);border-radius:20px;}
+.produtos-section h2{font-size:1.6rem;margin-bottom:15px;text-transform:uppercase;}
+.grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;padding:10px;align-items:stretch;}
+    @media(max-width:1100px){.grid{grid-template-columns:repeat(3, 1fr);}}
+    @media(max-width:768px){.grid{grid-template-columns:repeat(2, 1fr);gap:12px;}}
+    @media(max-width:600px){.grid{grid-template-columns:repeat(2, 1fr);gap:10px;padding:5px;}.categorias-container{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;padding-bottom:8px;}.cat-box{flex:none;white-space:nowrap;}}
+.aviso-encomenda{background:rgba(255,215,0,0.08);border:1px solid #f7e707;padding:12px;border-radius:10px;margin-bottom:15px;font-weight:600;font-size:0.9rem;}
+.aviso-oferta{background:linear-gradient(90deg,rgb(126, 120, 120),rgba(255,0,0,0.05));border:1px solid #ffffff;padding:12px;border-radius:10px;margin-bottom:15px;font-weight:800;color:#ffffffd5;font-size:0.9rem;}
+.card-produto{background:#000;border-radius:16px;overflow:hidden;border:1px solid rgba(255, 255, 255, 0.2);text-align:left;position:relative;display:flex;flex-direction:column;height:100%;}
+.card-produto.oferta{border:2px solid #fff;}
+.card-produto.oferta::before{content:"🔥 OFERTA";position:absolute;top:8px;left:8px;background:#ff0000b0;color:#fff;font-weight:900;font-size:0.65rem;padding:4px 8px;border-radius:12px;z-index:2;}
+.card-produto img{width:100%;height:220px;object-fit:contain;background:rgba(255,255,255,0.05);padding:12px;display:block;}
+.card-conteudo{padding:14px;display:flex;flex-direction:column;flex:1;}
+.card-produto h3{color:#fff;font-size:1.15rem;margin-bottom:6px;}
+.card-linha-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;}
+.tag-estado{background:rgba(255,215,0,0.15);border:1px solid rgba(255, 230, 0, 0.4);color:#ffd900;padding:3px 8px;border-radius:20px;font-size:0.65rem;font-weight:800;text-transform:uppercase;}
+.card-sub{color:#fde000;font-size:0.8rem;font-weight:600;margin-bottom:6px;}
+.obs{color:#ccc;font-size:11px;font-style:italic;margin-bottom:8px;white-space:pre-line;line-height:1.4;background:rgba(255,255,255,0.05);padding:6px 8px;border-radius:6px;border-left:2px solid #14cc1d;flex:1;}
+.preco{font-size:20px;font-weight:bold;margin:8px 0 6px 0;color:#fff;}
+.sinal{font-size:12px;color:#ffee00;font-weight:600;margin-bottom:8px;background:rgba(255,215,0,0.1);padding:4px 8px;border-radius:6px;display:inline-block;}
+.btn-comprar{display:block;padding:10px;background:#25D366;color:#fff;text-decoration:none;border-radius:20px;font-weight:bold;width:100%;text-align:center;font-size:0.85rem;margin-top:auto;cursor:pointer;border:none;}
+    @media(max-width:600px){.card-produto img{height:140px;padding:8px;}.card-conteudo{padding:10px;}.card-produto h3{font-size:0.9rem;}.preco{font-size:16px;}.btn-comprar{padding:8px;font-size:0.75rem;}.frase-destaque{font-size:1.2rem;}}
+    footer{text-align:center;padding:20px;background:rgba(0,0,0,0.5);font-size:0.8rem;}
+.rodape a{color:#25D366;font-weight:700;text-decoration:none;}
+    #modal-pedido{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;display:none;align-items:center;justify-content:center;padding:15px;}
+    #modal-pedido.ativo{display:flex;}
+.modal-conteudo{background:#111;border:1px solid #fff;border-radius:16px;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;padding:20px;}
+.modal-conteudo h3{color:#fff;margin-bottom:10px;text-transform:uppercase;text-align:center;font-size:1.1rem;}
+.modal-conteudo label{font-size:0.8rem;color:#fff;margin-top:12px;display:block;text-transform:uppercase;font-weight:700;}
+.modal-conteudo input,.modal-conteudo select,.modal-conteudo textarea{width:100%;padding:10px;margin-top:4px;border-radius:8px;border:1px solid #555;background:#000;color:#fff;outline:none;}
+.modal-conteudo input:focus,.modal-conteudo textarea:focus{border-color:#fff;}
+.pagamento-opcoes{display:flex;gap:8px;margin-top:6px;}
+.pagamento-opcoes button{flex:1;padding:10px;border-radius:8px;border:1px solid #555;background:#000;color:#fff;cursor:pointer;font-weight:700;font-size:0.8rem;}
+.pagamento-opcoes button.selecionado{background:#25D366;color:#fff;border-color:#25D366;}
+.modal-botoes{display:flex;gap:10px;margin-top:16px;}
+.btn-cancelar{flex:1;padding:12px;background:#333;color:#fff;border:none;border-radius:20px;cursor:pointer;font-weight:700;}
+.btn-enviar{flex:2;padding:12px;background:#25D366;color:#fff;border:none;border-radius:20px;cursor:pointer;font-weight:700;}
+.aviso-obrigatorio{font-size:0.75rem;color:#fff;margin-bottom:12px;text-align:center;border:1px dashed #fff;padding:8px;border-radius:8px;background:rgba(255,255,255,0.05);}
+</style>
+</head>
+<body>
+<video autoplay muted loop playsinline id="video-bg"><source src="estatua.mp4" type="video/mp4"></video>
+<div class="overlay"></div>
+<header><div class="banner-topo"><img src="banner.jpg" alt="pH Imports"></div><p class="frase-destaque">Seu próximo iPhone está aqui!</p></header>
+<section class="produtos-section">
+    <div class="barra-pesquisa-container"><input type="text" id="campo-busca" placeholder="Buscar..."><button id="btn-limpar-busca">✕</button></div>
+    <div class="categorias-container">
+        <button class="cat-box ativa" data-cat="todos">Todos</button>
+        <button class="cat-box" data-cat="pronta">📦 Pronta</button>
+        <button class="cat-box" data-cat="encomenda">🛒 Encomenda</button>
+        <button class="cat-box" data-cat="oferta">🔥 Ofertas</button>
+    </div>
+    <p id="resultado-busca" style="color:#FFD700;margin-bottom:15px;display:none;"></p>
+    <div id="secao-oferta"><h2>🔥 Ofertas Imperdíveis</h2><div class="aviso-oferta">⚡ Produtos em oferta por tempo Limitado!</div><div class="grid" id="lista-oferta"></div></div>
+    <div style="margin-top:30px;"><h2>📦 Pronta Entrega</h2><div class="grid" id="lista-pronta">Carregando...</div></div>
+    <div style="margin-top:30px;"><h2>🛒 Encomenda</h2><div class="aviso-encomenda">⚠️ Encomenda mediante sinal de 30%</div><div class="grid" id="lista-encomenda"></div></div>
+</section>
+<footer><div class="rodape">Desenvolvido por <a href="#" id="link-edmilson">Edmilson Bittencourt</a></div></footer>
+
+<div id="modal-pedido">
+  <div class="modal-conteudo">
+    <h3 id="modal-titulo">Finalizar Pedido</h3>
+    <div class="aviso-obrigatorio">É obrigatório preencher as informações abaixo para prosseguir com o pedido.<br>Entrega e taxas variam conforme disponibilidade do PH e distância do local.</div>
+    <label>Nome do cliente *</label><input type="text" id="m-nome" placeholder="Seu nome completo">
+    <label>Rua *</label><input type="text" id="m-rua" placeholder="Ex: Rua PH dos Cortes">
+    <label>Bairro *</label><input type="text" id="m-bairro" placeholder="Ex: Centro">
+    <label>Número *</label><input type="text" id="m-numero" placeholder="Ex: 157">
+    <label>Forma de pagamento *</label>
+    <div class="pagamento-opcoes">
+      <button data-pag="PIX">PIX</button>
+      <button data-pag="CARTÃO">CARTÃO</button>
+      <button data-pag="DINHEIRO">DINHEIRO</button>
+    </div>
+    <label>Estado</label><input type="text" id="m-estado">
+    <label>Cor</label><input type="text" id="m-cor">
+    <label>Armazenamento</label><input type="text" id="m-arm">
+    <label id="label-obs">Observações</label><textarea id="m-obs" rows="3"></textarea>
+    <div class="modal-botoes"><button class="btn-cancelar" onclick="fecharModal()">Cancelar</button><button class="btn-enviar" onclick="enviarPedido()">Enviar no WhatsApp</button></div>
+  </div>
+</div>
+
+<script>
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRP2NInt_uByp7nBS_v58_c_VfU6rcGDHibc7K3ad3NOFnVDwHELkzgHC9S3dBYkxelM9bFj0v469sz/pub?output=csv";
+const WHATSAPP_NUMERO = "555184254783";
+let TODOS_PRODUTOS = []; let CATEGORIA_ATIVA = 'todos'; let PRODUTO_ATUAL = null; let TIPO_ATUAL = ''; let PAGAMENTO_SELECIONADO = '';
+function converterLinkDrive(link){ if(!link) return ""; link=link.replace(/"/g,'').trim(); if(link.includes('thumbnail')||link.includes('.jpg')||link.includes('.png')) return link; const m=link.match(/\/d\/([a-zA-Z0-9-_]+)/); if(m&&m[1]) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1000`; const m2=link.match(/id=([a-zA-Z0-9-_]+)/); if(m2&&m2[1]) return `https://drive.google.com/thumbnail?id=${m2[1]}&sz=w1000`; return link; }
+function formatarPreco(v){ if(!v) return 0; v=v.toString().replace(/R\$/gi,'').replace(/\./g,'').replace(',','.').replace(/[^0-9.]/g,''); return parseFloat(v)||0; }
+function parseCSV(text){ const rows=[]; let row=[], cell='', inQuotes=false; for(let i=0;i<text.length;i++){ const c=text[i], n=text[i+1]; if(c=='"'){ if(inQuotes&&n=='"'){cell+='"'; i++;} else {inQuotes=!inQuotes;} } else if(c==','&&!inQuotes){row.push(cell); cell='';} else if((c=='\n'||c=='\r')&&!inQuotes){ if(cell!==''||row.length>0){row.push(cell); rows.push(row); row=[]; cell='';} if(c=='\r'&&n=='\n')i++; } else {cell+=c;} } if(cell!==''||row.length>0){row.push(cell); rows.push(row);} const headers=rows[0].map(h=>h.trim()); return rows.slice(1).map(r=>{let o={}; headers.forEach((h,i)=>o[h]=r[i]?.trim()||''); return o;}); }
+function criarCard(p){
+    let marca = (p['Marca'] || p['Celular'] || '').trim(); let modeloBase = (p['Modelo'] || '').trim();
+    let modelo = (marca + ' ' + modeloBase).trim(); if(marca && modeloBase.toLowerCase().startsWith(marca.toLowerCase())){ modelo = modeloBase; } if(!modelo) modelo = 'iPhone';
+    const cor=p['Cor']||''; const arm=p['Armazenamento']||''; const estadoOriginal=(p['Estado']||'').trim();
+    const obsOriginal=p['Observações']||''; const obsFormatada = obsOriginal.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>');
+    const disp=(p['Disponibilidade']||'').trim().toLowerCase(); const precoNum=formatarPreco(p['Valor']); const preco=precoNum.toLocaleString('pt-BR',{minimumFractionDigits:2});
+    const sinal=(precoNum*0.3).toLocaleString('pt-BR',{minimumFractionDigits:2}); const img=converterLinkDrive(p['Link da Foto']||p['Link da foto']);
+    const isOferta=disp==='oferta'; const isEncomenda=disp==='encomenda'; const sub=[arm,cor].filter(Boolean).join(' • ');
+    let tagEstadoHtml = estadoOriginal? `<span class="tag-estado">${estadoOriginal}</span>` : ''; const index = TODOS_PRODUTOS.indexOf(p);
+    const textoBotao = isEncomenda? 'Encomendar' : 'Comprar no WhatsApp';
+    return `<div class="card-produto ${isOferta?'oferta':''}"><img src="${img}" alt="${modelo}" loading="lazy"><div class="card-conteudo"><h3>${modelo}</h3><div class="card-linha-tags">${tagEstadoHtml}</div>${sub?`<div class="card-sub">${sub}</div>`:''}${obsOriginal?`<div class="obs">📝 ${obsFormatada}</div>`:''}<div class="preco">R$ ${preco}</div>${isEncomenda?`<div class="sinal">Sinal 30%: R$ ${sinal}</div>`:''}<button class="btn-comprar" onclick="abrirModal(${index})">${textoBotao}</button></div></div>`;
+}
+function renderizar(lista){
+    const cO=document.getElementById('lista-oferta'), cP=document.getElementById('lista-pronta'), cE=document.getElementById('lista-encomenda'), sO=document.getElementById('secao-oferta'), info=document.getElementById('resultado-busca');
+    cO.innerHTML=''; cP.innerHTML=''; cE.innerHTML=''; let tO=false,tP=false,tE=false;
+    lista.forEach(p=>{ const d=(p['Disponibilidade']||'').toLowerCase().trim(); if(d==='oferta'){cO.innerHTML+=criarCard(p); tO=true;} else if(d.includes('pronta')){cP.innerHTML+=criarCard(p); tP=true;} else if(d==='encomenda'){cE.innerHTML+=criarCard(p); tE=true;} else {cP.innerHTML+=criarCard(p); tP=true;} });
+    sO.style.display = (tO || CATEGORIA_ATIVA==='todos' || CATEGORIA_ATIVA==='oferta')? 'block':'none';
+    const termo=document.getElementById('campo-busca').value.trim();
+    if(lista.length===0 && termo!==''){ info.style.display='block'; info.textContent=`Nenhum resultado para "${termo}"`; } else if(termo!==''){ info.style.display='block'; info.textContent=`${lista.length} resultado(s) para "${termo}"`; } else { info.style.display='none'; }
+}
+function aplicarFiltros(){
+    const termo=document.getElementById('campo-busca').value.toLowerCase().trim();
+    let filtrados = TODOS_PRODUTOS.filter(p=>{ const textoCompleto = Object.values(p).join(' ').toLowerCase(); return textoCompleto.includes(termo); });
+    if(CATEGORIA_ATIVA!=='todos'){ filtrados = filtrados.filter(p=>{ const d=(p['Disponibilidade']||'').toLowerCase().trim(); if(CATEGORIA_ATIVA==='oferta') return d==='oferta'; if(CATEGORIA_ATIVA==='pronta') return d.includes('pronta'); if(CATEGORIA_ATIVA==='encomenda') return d==='encomenda'; return true; }); }
+    renderizar(filtrados);
+}
+function abrirModal(index){
+    const p = TODOS_PRODUTOS[index]; PRODUTO_ATUAL = p; const disp = (p['Disponibilidade']||'').toLowerCase().trim(); TIPO_ATUAL = disp; PAGAMENTO_SELECIONADO = '';
+    document.querySelectorAll('.pagamento-opcoes button').forEach(b=>b.classList.remove('selecionado'));
+    document.getElementById('m-nome').value=''; document.getElementById('m-rua').value=''; document.getElementById('m-bairro').value=''; document.getElementById('m-numero').value='';
+    let cor = p['Cor']||''; let arm = p['Armazenamento']||''; let estado = p['Estado']||''; let obsCard = p['Observações']||'';
+    const mEstado = document.getElementById('m-estado'); const mCor = document.getElementById('m-cor'); const mArm = document.getElementById('m-arm'); const mObs = document.getElementById('m-obs'); const mObsLabel = document.getElementById('label-obs');
+    if(disp==='encomenda'){
+        document.getElementById('modal-titulo').textContent='NOVA ENCOMENDA - PH IMPORTS';
+        mEstado.value=''; mCor.value=''; mArm.value=''; mObs.value='';
+        mEstado.placeholder='Cliente preenche - Ex: Novo'; mCor.placeholder='Cliente preenche - Ex: Preto'; mArm.placeholder='Cliente preenche - Ex: 128GB'; mObs.placeholder='Opcional - digite se quiser';
+        mEstado.readOnly=false; mCor.readOnly=false; mArm.readOnly=false; mObs.readOnly=false; mObsLabel.textContent='OBSERVAÇÕES (OPCIONAL)';
+    } else {
+        document.getElementById('modal-titulo').textContent = disp==='oferta'? 'NOVA VENDA - PRODUTO EM OFERTA - PH IMPORTS' : 'NOVA VENDA - PRONTA ENTREGA - PH IMPORTS';
+        mEstado.value=estado; mCor.value=cor; mArm.value=arm; mObs.value=obsCard; mEstado.readOnly=true; mCor.readOnly=true; mArm.readOnly=true; mObs.readOnly=true; mObsLabel.textContent='OBSERVAÇÕES';
+    }
+    document.getElementById('modal-pedido').classList.add('ativo');
+}
+function fecharModal(){ document.getElementById('modal-pedido').classList.remove('ativo'); }
+function enviarPedido(){
+    const nome = document.getElementById('m-nome').value.trim();
+    const rua = document.getElementById('m-rua').value.trim();
+    const bairro = document.getElementById('m-bairro').value.trim();
+    const numero = document.getElementById('m-numero').value.trim();
+    const estado = document.getElementById('m-estado').value.trim();
+    const cor = document.getElementById('m-cor').value.trim();
+    const arm = document.getElementById('m-arm').value.trim();
+    const obs = document.getElementById('m-obs').value.trim();
+    if(!nome ||!rua ||!bairro ||!numero ||!PAGAMENTO_SELECIONADO){ alert('Preencha Nome, Rua, Bairro, Número e Forma de Pagamento! São obrigatórios.'); return; }
+    if(TIPO_ATUAL==='encomenda' && (!estado ||!cor ||!arm)){ alert('Para encomenda preencha Estado, Cor e Armazenamento!'); return; }
+    const p = PRODUTO_ATUAL;
+    let marca = (p['Marca'] || p['Celular'] || '').trim() || 'Apple';
+    let modeloBase = (p['Modelo'] || '').trim() || p['Marca'] || 'iPhone';
+    let titulo = '';
+    if(TIPO_ATUAL==='encomenda') titulo='NOVA ENCOMENDA - PH IMPORTS';
+    else if(TIPO_ATUAL==='oferta') titulo='NOVA VENDA - PRODUTO EM OFERTA - PH IMPORTS';
+    else titulo='NOVA VENDA - PRONTA ENTREGA - PH IMPORTS';
+
+    let msg = `${titulo}\n\n`;
+    msg += `NOME DO CLIENTE: ${nome}\n\n`;
+    msg += `LOCAL DE ENTREGA:\n`;
+    msg += `Rua: ${rua}\n`;
+    msg += `Bairro: ${bairro}\n`;
+    msg += `Número: ${numero}\n\n`;
+    msg += `FORMA DE PAGAMENTO: ${PAGAMENTO_SELECIONADO}\n\n`;
+    msg += `DESCRIÇÃO:\n`;
+    msg += `CELULAR - ${marca}\n`;
+    msg += `MODELO - ${modeloBase}\n`;
+    msg += `ESTADO - ${estado || (p['Estado']||'Não informado')}\n`;
+    msg += `COR - ${cor || (p['Cor']||'Não informado')}\n`;
+    msg += `ARMAZENAMENTO - ${arm || (p['Armazenamento']||'Não informado')}\n`;
+    if(TIPO_ATUAL==='encomenda'){
+        if(obs){ msg += `OBSERVAÇÕES - ${obs}`; }
+    } else {
+        if(obs){ msg += `OBSERVAÇÕES - ${obs}`; }
+    }
+
+    const link = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(msg)}`;
+    window.open(link, '_blank');
+    fecharModal();
+}
+async function carregar(){ try{const r=await fetch(CSV_URL); const t=await r.text(); TODOS_PRODUTOS=parseCSV(t).filter(p=>p['Modelo']||p['Marca']||p['Celular']); renderizar(TODOS_PRODUTOS);}catch(e){document.getElementById('lista-pronta').innerHTML='<p style="color:red;">Erro ao carregar CSV</p>';} }
+document.addEventListener('DOMContentLoaded',()=>{
+    const campo=document.getElementById('campo-busca'), btn=document.getElementById('btn-limpar-busca');
+    campo.addEventListener('input',()=>{ btn.classList.toggle('mostrar', campo.value.trim().length>0); aplicarFiltros(); });
+    btn.addEventListener('click',()=>{campo.value=''; btn.classList.remove('mostrar'); aplicarFiltros();});
+    document.querySelectorAll('.cat-box').forEach(b=>{ b.addEventListener('click',()=>{ document.querySelectorAll('.cat-box').forEach(x=>x.classList.remove('ativa')); b.classList.add('ativa'); CATEGORIA_ATIVA = b.dataset.cat; aplicarFiltros(); }); });
+    document.querySelectorAll('.pagamento-opcoes button').forEach(b=>{ b.addEventListener('click',()=>{ document.querySelectorAll('.pagamento-opcoes button').forEach(x=>x.classList.remove('selecionado')); b.classList.add('selecionado'); PAGAMENTO_SELECIONADO=b.dataset.pag; }); });
+    document.getElementById('link-edmilson').addEventListener('click',(e)=>{ e.preventDefault(); const msgEd="Olá, vim pelo site da PH IMPORTS, curti o site e gostaria de pedir um orçamento."; window.open(`https://wa.me/5551985108885?text=${encodeURIComponent(msgEd)}`,'_blank'); });
+});
+carregar();
+</script>
+</body>
+</html>
