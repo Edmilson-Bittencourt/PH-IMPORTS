@@ -7,8 +7,6 @@
 <style>
     *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI', sans-serif;}
     body{color:#fff;background:#000;overflow-x:hidden;}
-    #video-bg{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-2;}
-.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:-1;}
     header{padding:0;text-align:center;width:100%;background:#000;}
 .banner-topo{width:100%;margin:0;padding:0;border-radius:0;overflow:hidden;line-height:0;background:#000;}
 .banner-topo img{width:100%;height:auto;display:block;object-fit:contain;}
@@ -61,8 +59,6 @@
 </style>
 </head>
 <body>
-<video autoplay muted loop playsinline id="video-bg"><source src="estatua.mp4" type="video/mp4"></video>
-<div class="overlay"></div>
 <header><div class="banner-topo"><img src="banner.jpg" alt="pH Imports"></div><p class="frase-destaque">Seu próximo iPhone está aqui!</p></header>
 <section class="produtos-section">
     <div class="barra-pesquisa-container"><input type="text" id="campo-busca" placeholder="Buscar..."><button id="btn-limpar-busca">✕</button></div>
@@ -207,3 +203,5 @@ carregar();
 </script>
 </body>
 </html>
+
+
